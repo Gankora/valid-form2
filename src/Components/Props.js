@@ -25,13 +25,9 @@ export const formProps = yup.object().shape({
 				return !cyrillicRegex.test(value);
 			},
 		)
-		.test(
-			'isPasswordlValid',
-			'Пароль должен содержать минимум 5 символов, включая хотя бы одну заглавную букву и одну цифру, без пробелов',
-			(value) => {
-				return passwordRegex.test(value);
-			},
-		),
+		.test('isPasswordlValid', 'Ошибка наименования пароля', (value) => {
+			return passwordRegex.test(value);
+		}),
 	repeatPassword: yup
 		.string()
 		.required('Необходимо повторно ввести пароль')

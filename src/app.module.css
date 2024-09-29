@@ -54,3 +54,12 @@
 .errorLabel {
 	color: red;
 }
+
+.messagePassword {
+	padding: 10px;
+	border-radius: 5px;
+	margin-bottom: 20px;
+	font-size: 16px;
+	text-align: center;
+	background-color: #e0f7fa;
+}

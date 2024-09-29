@@ -4,6 +4,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import styles from './app.module.css';
 import { formProps } from './Components/Props';
+import { useState } from 'react';
 
 const validationSchema = yup.object().shape({
 	email: formProps.fields.email,
@@ -12,6 +13,18 @@ const validationSchema = yup.object().shape({
 });
 
 export const App = () => {
+	const [messagePassword, setMessagePassword] = useState('');
+
+	const handleMessagePasswordFocus = () => {
+		setMessagePassword(
+			'Пароль должен содержать минимум 5 символов, включая хотя бы одну заглавную букву и одну цифру, без пробелов',
+		);
+	};
+
+	const handleMessagePasswordBlur = () => {
+		setMessagePassword('');
+	};
+
 	const {
 		register,
 		handleSubmit,
@@ -30,15 +43,19 @@ export const App = () => {
 	const passwordError = errors.password?.message;
 	const repeatPasswordError = errors.repeatPassword?.message;
 
+	//const submitButtonRef = useRef(null);
+
 	const sendFormData = (formData) => {
 		console.log(formData);
+		alert('Пользователь успешно зарегистрирован');
 		reset();
 	};
 
-	//const submitButtonRef = useRef(null);
-
 	return (
 		<div className={styles.app}>
+			{messagePassword && (
+				<div className={styles.messagePassword}>{messagePassword}</div>
+			)}
 			<h2>Регистрация пользователя</h2>
 			<form className={styles.validForm} onSubmit={handleSubmit(sendFormData)}>
 				<input
@@ -55,11 +72,17 @@ export const App = () => {
 					name="password"
 					type="password"
 					placeholder="Пароль"
-					{...register('password', formProps)}
+					onBlur={handleMessagePasswordBlur}
+					onFocus={handleMessagePasswordFocus}
+					{...register('password', {
+						...formProps.fields.password,
+						onBlur: handleMessagePasswordBlur,
+					})}
 				/>
 				{passwordError && (
 					<div className={styles.errorLabel}>{passwordError}</div>
 				)}
+
 				<br />
 				<input
 					className={styles.validInput}
